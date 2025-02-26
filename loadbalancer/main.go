@@ -19,10 +19,10 @@ type Server interface {
 }
 
 func newSimpleServer(add string) *simpleServer {
-	serverUrl, err := url.Parse(addr)
+	serverUrl, err := url.Parse(add)
 	handleErr(err)
 	return &simpleServer{
-		addr:  addr,
+		addr:  add,
 		proxy: httputil.NewSingleHostReverseProxy(serverUrl),
 	}
 
@@ -33,10 +33,13 @@ type Loadbalancer struct {
 	rounRobinCount int
 	servers        []Server
 }
-func NewLoad  {
-	port string
-	roundRobin int
-	servers []Server
+
+func NewLoadBalancer(port string, servers []Server) *Loadbalancer {
+	return &Loadbalancer{
+		port:           port,
+		rounRobinCount: 0,
+		servers:        servers,
+	}
 }
 func handleErr(err error) {
 	if err != nil {
