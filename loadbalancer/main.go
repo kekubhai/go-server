@@ -47,3 +47,5 @@ func handleErr(err error) {
 		os.Exit(1)
 	}
 }
+func (lb *Loadbalancer) getNexavailableServer(){}
+	func(lb *Loadbalancer) serveProxy(rw http.ResponseWriter, r *http.Request){}
