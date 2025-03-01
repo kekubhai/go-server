@@ -49,3 +49,10 @@ func handleErr(err error) {
 }
 func (lb *Loadbalancer) getNexavailableServer(){}
 	func(lb *Loadbalancer) serveProxy(rw http.ResponseWriter, r *http.Request){}
+func main (){
+	servers := []Server{
+  newSimpleServer(&ServerURL{URL: "https://www.facebook.com"}),
+		newSimpleServer("https://www.google.com"),
+		newSimpleServer("https://www.github.com"),
+	}
+}  
