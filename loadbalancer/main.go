@@ -47,11 +47,29 @@ func handleErr(err error) {
 		os.Exit(1)
 	}
 }
-func (lb *Loadbalancer) getNexavailableServer()                             {}
-func (lb *Loadbalancer) serveProxy(rw http.ResponseWriter, r *http.Request) {}
+func (s *simpleServer) Address() string {return s.addr}
+func (s *simpleServer) IsAlive()bool {return true}
+func (s *simpleServer) Serve(rw http.ResponseWriter, req *http.Request){
+	s.proxy.ServeHTTP(rw, req)
+}
+
+func (lb *Loadbalancer) getNexavailableServer()  Server{
+	server:=lb.servers[lb.rounRobinCount%len(lb.servers)]
+	for server.IsAlive(){
+		lb.rounRobinCount++;
+		server=lb.servers[lb.rounRobinCount%len(lb.servers)]
+	}
+	lb.rounRobinCount++
+	return server
+}                          
+func (lb *Loadbalancer) serveProxy(rw http.ResponseWriter, req *http.Request) {
+	targetServer :=lb.getNexavailableServer( )
+	fmt.Print("forarding request to address %q\n", targetServer.Address())
+	targetServer.Serve(rw, req)
+}
 func main() {
 	servers := []Server{
-		newSimpleServer(&ServerURL{URL: "https://www.facebook.com"}),
+		newSimpleServer( "https://www.facebook.com"),
 		newSimpleServer("https://www.google.com"),
 		newSimpleServer("https://www.github.com"),
 	}
@@ -60,7 +78,9 @@ func main() {
 				lb.serveProxy(rw ,req)
 
 			 }
-			 http.HandleFunc("/,)
+			 http.HandleFunc("/",handleRedirect)
+			 fmt.Printf("server requests at locathost :%d'\n",lb.port)
+			 http.ListenAndServe(":"+lb.port,nil)
 
 
 }
