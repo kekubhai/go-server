@@ -47,12 +47,20 @@ func handleErr(err error) {
 		os.Exit(1)
 	}
 }
-func (lb *Loadbalancer) getNexavailableServer(){}
-	func(lb *Loadbalancer) serveProxy(rw http.ResponseWriter, r *http.Request){}
-func main (){
+func (lb *Loadbalancer) getNexavailableServer()                             {}
+func (lb *Loadbalancer) serveProxy(rw http.ResponseWriter, r *http.Request) {}
+func main() {
 	servers := []Server{
-  newSimpleServer(&ServerURL{URL: "https://www.facebook.com"}),
+		newSimpleServer(&ServerURL{URL: "https://www.facebook.com"}),
 		newSimpleServer("https://www.google.com"),
 		newSimpleServer("https://www.github.com"),
 	}
-}  
+	lb := NewLoadBalancer("8000", servers)
+	         handleRedirect:=func(rw http.ResponseWriter, req *http.Request){
+				lb.serveProxy(rw ,req)
+
+			 }
+			 http.HandleFunc("/,)
+
+
+}
