@@ -64,7 +64,7 @@ func (lb *Loadbalancer) getNexavailableServer()  Server{
 }                          
 func (lb *Loadbalancer) serveProxy(rw http.ResponseWriter, req *http.Request) {
 	targetServer :=lb.getNexavailableServer( )
-	fmt.Print("forarding request to address %q\n", targetServer.Address())
+	fmt.Printf("forarding request to address %q\n", targetServer.Address())
 	targetServer.Serve(rw, req)
 }
 func main() {
